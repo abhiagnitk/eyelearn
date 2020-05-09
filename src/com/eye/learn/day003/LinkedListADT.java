@@ -93,6 +93,84 @@ public class LinkedListADT {
 
         head = prev;
     }
+
+    public boolean isPresent(int data) {
+        if(head == null) return false;
+        Node cur = head;
+        while(cur != null) {
+            if(cur.data == data)
+                return true;
+            cur = cur.next;
+        }
+        return false;
+    }
+
+    public Node getNthNodeFromEnd(int n) {
+        if(head == null) return null;
+        int i = 0;
+        Node cur = head;
+        while(i <= n && cur != null) {
+            cur = cur.next;
+        }
+        if(cur == null) return null;
+        Node cur1 = head;
+        while(cur != null) {
+            cur = cur.next;
+            cur1 = cur1.next;
+        }
+        return cur1;
+    }
+
+    public Node findMiddleOfLinkedList() {
+        Node slow = head;
+        Node fast = head;
+
+        while(fast != null) {
+            fast = fast.next;
+            if(fast == null) {
+                return slow;
+            }
+            fast = fast.next;
+            if(fast == null) {
+                return slow;
+            }
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    public void printListFromEnd() {
+        printListFromEndUtil(head);
+        System.out.println();
+    }
+
+    public void printListFromEndUtil(Node head) {
+        if(head == null) return;;
+        printListFromEndUtil(head.next);
+        System.out.print(head.data + " ");
+    }
+
+    public int sizeOfLinkedList() {
+        if(head == null) return 0;
+        int size = 0;
+
+        Node cur = head;
+
+        while(cur != null) {
+            size++;
+            cur = cur.next;
+        }
+
+        return size;
+    }
+
+    public boolean isLinkedListPalindrome() {
+        if(head == null || head.next == null) return true;
+
+
+
+        return false;
+    }
 }
 
 class Node {

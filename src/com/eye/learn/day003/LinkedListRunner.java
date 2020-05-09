@@ -13,7 +13,7 @@ public class LinkedListRunner {
             System.out.println("1)Insert front \t 2)Insert Last \t " +
                     "3)Delete Front \t 4)Delete last \t " +
                     "5)Print \t 6)ReverseRecursive \t " +
-                    "7)Reverse Iterative \t 0)Terminate");
+                    "7)Reverse Iterative \t 8)Search \t 0)Terminate");
 
             Scanner sc = new Scanner(System.in);
             int n = sc.nextInt();
@@ -56,6 +56,11 @@ public class LinkedListRunner {
                 case 7:
                     list.reverseIterative();
                     break;
+
+                case 8:
+                    System.out.println("Enter the data to be searched");
+                    int n8 = sc.nextInt();
+                    System.out.println(list.isPresent(n8));
 
                 default:
                     System.out.println("Incorrect entry. Try Again");
