@@ -97,4 +97,69 @@ public class DPUtility {
 
     //-----------------------------------------------------------------------------------------------------//
 
+    /*
+    3. LCS Problem Statement: Given two sequences, find the length of longest subsequence present in both of them.
+    LCS for input Sequences “ABCDGH” and “AEDFHR” is “ADH” of length 3.
+    LCS for input Sequences “AGGTAB” and “GXTXAYB” is “GTAB” of length 4.
+    Practice: https://leetcode.com/problems/longest-common-subsequence/
+     */
+
+    //Recursive
+    public int longestCommonSubsequenceRecursive(String s1, String s2) {
+        return lcsHelperRec(s1, s2, 0, 0);
+    }
+
+    public int lcsHelperRec(String s1, String s2, int i, int j) {
+        if(i >= s1.length() || j >= s2.length()) return 0;
+
+        if(s1.charAt(i) == s2.charAt(j)) {
+            return  1 + lcsHelperRec(s1, s2, i + 1, j + 1);
+        }
+
+        return Math.max(lcsHelperRec(s1, s2, i + 1, j),
+                lcsHelperRec(s1, s2, i, j + 1));
+    }
+
+    //Recursive Implementation with Memoization - Top down
+    public int longestCommonSubsequenceWithMemoization(String s1, String s2) {
+        int table[][] = new int[s1.length()][s2.length()];
+        for(int i = 0; i < s1.length(); i++) {
+            for(int j = 0; j < s2.length(); j++) {
+                table[i][j] = -1;
+            }
+        }
+        return lcsHelper(s1, s2, 0, 0, table);
+    }
+
+    public int lcsHelper(String s1, String s2, int i, int j, int table[][]) {
+        if(i >= s1.length() || j >= s2.length()) return 0;
+        if(table[i][j] != -1) return table[i][j];
+
+        if(s1.charAt(i) == s2.charAt(j)) {
+            return table[i][j] = 1 + lcsHelper(s1, s2, i + 1, j + 1, table);
+        }
+
+        return table[i][j] = Math.max(lcsHelper(s1, s2, i + 1, j, table),
+                lcsHelper(s1, s2, i, j + 1, table));
+    }
+
+    //Iterative - Bottom up
+    public int longestCommonSubsequenceIterative(String s1, String s2) {
+
+        int m = s1.length();
+        int n = s2.length();
+
+        int table[][] = new int[m + 1][n + 1];
+
+        for(int i = 1; i < m + 1; i++) {
+            for(int j = 1; j < n + 1; j++) {
+                if(s1.charAt(i - 1) == s2.charAt(j - 1))
+                    table[i][j] = 1 + table[i - 1][j - 1];
+                else
+                    table[i][j] = Math.max(table[i - 1][j], table[i][j - 1]);
+            }
+        }
+
+        return table[m][n];
+    }
 }
