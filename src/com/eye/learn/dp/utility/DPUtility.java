@@ -37,9 +37,7 @@ public class DPUtility {
     Practice: https://www.hackerrank.com/challenges/max-array-sum/problem
      */
 
-    /*
-        Recursive Implementation
-     */
+    // Recursive Implementation
 
     static int maxSubsetSumRecursive(int[] arr) {
         return maxSubsetSumRecursiveHelper(arr, 0, arr.length);
@@ -56,9 +54,7 @@ public class DPUtility {
         return res;
     }
 
-    /*
-    Recursive Implementation with Memoization
-     */
+    //Recursive Implementation with Memoization
     static int maxSubsetSumRecursiveWithMemoization(int[] arr) {
         int maxArr[] = new int[arr.length];
         for(int i = 0; i < arr.length; i++)
@@ -79,9 +75,7 @@ public class DPUtility {
         return res;
     }
 
-    /*
-    Iterative Implementation
-     */
+    //Iterative Implementation
     static int maxSubsetSum(int[] arr) {
         int s1 = arr[0];
         int s2 = Math.max(arr[0], arr[1]);
@@ -162,4 +156,64 @@ public class DPUtility {
 
         return table[m][n];
     }
+
+    //-----------------------------------------------------------------------------------------------------//
+
+    /*
+    4. Coin change
+    Given a value N, if we want to make change for N cents, and we have infinite supply of each of
+    S = { S1, S2, .. , Sm} valued coins, how many ways can we make the change? The order of coins doesn’t matter.
+    For example, for N = 4 and S = {1,2,3}, there are four solutions: {1,1,1,1},{1,1,2},{2,2},{1,3}. So output is 4.
+    For N = 10 and S = {2, 5, 3, 6}, there are five solutions: {2,2,2,2,2}, {2,2,3,3}, {2,2,6}, {2,3,5} and {5,5}.
+    So the output should be 5.
+    Practice: https://leetcode.com/problems/coin-change-2/
+     */
+
+    //Recursive implementation
+    public int changeRecursive(int amount, int[] coins) {
+        return changeRecursiveHelper(amount, coins, 0);
+    }
+
+    public int changeRecursiveHelper(int amount, int[] coins, int i) {
+        if(amount == 0) return 1;
+        if(amount < 0 || i >= coins.length) return 0;
+        return changeRecursiveHelper(amount - coins[i], coins, i) +
+                changeRecursiveHelper(amount, coins, i + 1);
+
+    }
+
+    //Recursive implementation with memoization
+    public int changeRecursiveMemoization(int amount, int[] coins) {
+        int table[][] = new int[coins.length][amount];
+        for(int i = 0; i < coins.length; i++) {
+            for(int j = 0; j < amount; j++) {
+                table[i][j] = -1;
+            }
+        }
+        return changeRecursiveMemoizationHelper(amount, coins, 0, table);
+    }
+
+    public int changeRecursiveMemoizationHelper(int amount, int[] coins, int i, int table[][]) {
+        if(amount == 0) return 1;
+        if(amount < 0 || i >= coins.length) return 0;
+        if(table[i][amount - 1] != -1) return table[i][amount - 1];
+        return table[i][amount - 1] = changeRecursiveMemoizationHelper(amount - coins[i], coins, i, table) +
+                changeRecursiveMemoizationHelper(amount, coins, i + 1, table);
+
+    }
+
+    //Iterative - Bottom up
+    public int changeIterative(int amount, int[] coins) {
+        int table[] = new int[amount + 1];
+        table[0] = 1;
+        for(int i = 0; i < coins.length; i++) {
+            for(int j = coins[i]; j < amount + 1; j++) {
+                table[j]  += table[j - coins[i]];
+            }
+        }
+        return table[amount];
+    }
+
+    //-----------------------------------------------------------------------------------------------------//
+
 }
