@@ -38,7 +38,6 @@ public class DPUtility {
      */
 
     // Recursive Implementation
-
     static int maxSubsetSumRecursive(int[] arr) {
         return maxSubsetSumRecursiveHelper(arr, 0, arr.length);
     }
@@ -54,7 +53,7 @@ public class DPUtility {
         return res;
     }
 
-    //Recursive Implementation with Memoization
+    //Recursive Implementation with Memoization - Top down
     static int maxSubsetSumRecursiveWithMemoization(int[] arr) {
         int maxArr[] = new int[arr.length];
         for(int i = 0; i < arr.length; i++)
@@ -75,7 +74,7 @@ public class DPUtility {
         return res;
     }
 
-    //Iterative Implementation
+    //Iterative Implementation - Bottom up
     static int maxSubsetSum(int[] arr) {
         int s1 = arr[0];
         int s2 = Math.max(arr[0], arr[1]);
@@ -98,7 +97,7 @@ public class DPUtility {
     Practice: https://leetcode.com/problems/longest-common-subsequence/
      */
 
-    //Recursive
+    //Recursive Implementation
     public int longestCommonSubsequenceRecursive(String s1, String s2) {
         return lcsHelperRec(s1, s2, 0, 0);
     }
@@ -182,7 +181,7 @@ public class DPUtility {
 
     }
 
-    //Recursive implementation with memoization
+    //Recursive implementation with memoization - Top down
     public int changeRecursiveMemoization(int amount, int[] coins) {
         int table[][] = new int[coins.length][amount];
         for(int i = 0; i < coins.length; i++) {
@@ -215,5 +214,165 @@ public class DPUtility {
     }
 
     //-----------------------------------------------------------------------------------------------------//
+    /*
+    5. Number of BSTs with n keys
+    Given n, how many structurally unique BST's (binary search trees) that store values 1 ... n?
+    Practice: https://leetcode.com/problems/unique-binary-search-trees/
+    Note: If n >= 20, int won't be able to hold that large value
+     */
+
+    //Recursive Implementation
+    public int numTreesRecursive(int n) {
+        if(n <= 1) return 1;
+        int sum = 0;
+        for(int i = 1; i <= n; i++) {
+            sum += (numTreesRecursive(i - 1) * numTreesRecursive(n - i));
+        }
+        return sum;
+    }
+
+    //Recursion with Memoization - Top down
+    public int numTreesMemoization(int n) {
+        int table[] = new int[n + 1];
+        table[0] = 1;
+        table[1] = 1;
+        return numTreesMemoizationHelper(n, table);
+    }
+
+    public int numTreesMemoizationHelper(int n, int table[]) {
+        if(n <= 1) return 1;
+        if(table[n] != 0) return table[n];
+        int sum = 0;
+        for(int i = 1; i <= n; i++) {
+            sum += (numTreesMemoizationHelper(i - 1, table) * numTreesMemoizationHelper(n - i, table));
+        }
+        return table[n] = sum;
+    }
+
+    //Iterative - Bottom up
+    public int numTreesIterative(int n) {
+        if(n <= 1) return 1;
+        int table[] = new int[n + 1];
+        table[0] = 1;
+        table[1] = 1;
+        for(int i = 2; i < n + 1; i++) {
+            table[i] = 0;
+            for(int j = 1; j <= i; j++) {
+                table[i] += table[j - 1] * table[i - j];
+            }
+        }
+        return table[n];
+    }
+
+
+    //-----------------------------------------------------------------------------------------------------//
+    /*
+    6. Tiling Problem
+    Given a “2 x n” board and tiles of size 2 x 1, count the number of ways to tile the given board using the 2 x 1 tiles.
+    A tile can either be placed horizontally i.e., as a 1 x 2 tile or vertically i.e., as 2 x 1 tile.
+    Input n = 3 Output: 3
+    Input n = 4 Output: 5
+    Since the number of ways can be very large,
+    return the number of ways modulo (10^9 + 7).
+    Practice: https://www.interviewbit.com/problems/tiling-problem/
+     */
+
+    //Recursive Implementation
+    public static int tilingRecusrive(int A) {
+        final int M = 1000000007;
+        if(A == 1) return 1;
+        if(A == 2) return 2;
+        return (tilingRecusrive(A - 1) + tilingRecusrive(A - 2)) % M;
+    }
+
+    //Recursion with Memoization - Top down
+    public int tilingRecusriveMemoization(int A) {
+        if(A == 1) return 1;
+        int table[] = new int[A + 1];
+        table[1] = 1;
+        table[2] = 2;
+        return tilingRecursiveMemoizationHelper(A, table);
+    }
+
+    public int tilingRecursiveMemoizationHelper(int A, int table[]) {
+        final int M = 1000000007;
+        if(table[A] != 0) return table[A];
+        return table[A] = (tilingRecursiveMemoizationHelper(A - 1, table) +
+                tilingRecursiveMemoizationHelper(A - 2, table)) % M;
+    }
+
+    //Iterative - Bottom up
+    public int tilingIterative(int A) {
+        final int M = 1000000007;
+        int a1 = 1; int a2 = 2;
+        if(A == 1) return a1;
+        for(int i = 3; i <= A; i++) {
+            int temp = (a1 + a2) % M;
+            a1 = a2 % M;
+            a2 = temp;
+        }
+        return a2;
+    }
+
+    //-----------------------------------------------------------------------------------------------------//
+
+    /*
+    Number of ways to reach nth stair using upto m steps at a time
+    Count the number of ways a person can climb n stairs if the person can climb up to m stairs at a time.
+    Input: n = 4, m = 2    Output: 5
+    Input: n = 7, m= 3     Output: 44
+    Practice: https://www.hackerrank.com/challenges/ctci-recursive-staircase/problem
+     */
+
+    //Recursive Implementation
+    static int stepPermsRec(int n, int m) {
+        if(n == 1) return 1;
+        int ways = 0;
+        if(n <= m)
+            ways = 1;
+        for(int i = 1; i <= m && i < n; i++) {
+            ways += stepPermsRec(n - i, m);
+        }
+        return ways;
+    }
+
+
+    //Recursion with memoization - Top down
+    static int stepPermsMemoization(int n, int m) {
+        int table[] = new int[n + 1];
+        table[1] = 1;
+        return stepPermsRecHelper(n, m, table);
+    }
+
+    static int stepPermsRecHelper(int n, int m, int table[]) {
+        if(n == 1) return 1;
+        if(table[n] != 0) return table[n];
+        int ways = 0;
+        if(n <= m)
+            ways = 1;
+
+        for(int i = 1; i <= m && i < n; i++) {
+            ways += stepPermsRecHelper(n - i, m, table);
+        }
+        return table[n] = ways;
+    }
+
+    //Iterative - Bottom up
+    static int stepPermsIterative(int n, int m) {
+        if(n == 1) return 1;
+        int table[] = new int[n + 1];
+        table[1] = 1;
+
+        for(int i = 2; i <= n; i++) {
+            if(i <= m)
+                table[i] = 1;
+            for(int j = 1; j <= m && j < i; j++) {
+                table[i] += table[i - j];
+            }
+        }
+        return table[n];
+    }
+
+    //Sliding Window Approach - Try on your own
 
 }
