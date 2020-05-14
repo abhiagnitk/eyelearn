@@ -56,13 +56,13 @@ public class DPUtility {
     //Recursive Implementation with Memoization - Top down
     static int maxSubsetSumRecursiveWithMemoization(int[] arr) {
         int maxArr[] = new int[arr.length];
-        for(int i = 0; i < arr.length; i++)
+        for (int i = 0; i < arr.length; i++)
             maxArr[i] = Integer.MIN_VALUE;
         return maxSubsetSumRecursiveWithMemoziationHelper(arr, 0, arr.length, maxArr);
     }
 
     static int maxSubsetSumRecursiveWithMemoziationHelper(int[] arr, int i, int n, int maxArr[]) {
-        if(maxArr[i] != Integer.MIN_VALUE) return maxArr[i];
+        if (maxArr[i] != Integer.MIN_VALUE) return maxArr[i];
         if (i == n - 1) return maxArr[i] = arr[n - 1];
         if (i == n - 2) return maxArr[i] = Math.max(arr[n - 1], arr[n - 2]);
         int res = Math.max(maxSubsetSumRecursiveWithMemoziationHelper(arr, i + 1, n, maxArr),
@@ -103,10 +103,10 @@ public class DPUtility {
     }
 
     public int lcsHelperRec(String s1, String s2, int i, int j) {
-        if(i >= s1.length() || j >= s2.length()) return 0;
+        if (i >= s1.length() || j >= s2.length()) return 0;
 
-        if(s1.charAt(i) == s2.charAt(j)) {
-            return  1 + lcsHelperRec(s1, s2, i + 1, j + 1);
+        if (s1.charAt(i) == s2.charAt(j)) {
+            return 1 + lcsHelperRec(s1, s2, i + 1, j + 1);
         }
 
         return Math.max(lcsHelperRec(s1, s2, i + 1, j),
@@ -116,8 +116,8 @@ public class DPUtility {
     //Recursive Implementation with Memoization - Top down
     public int longestCommonSubsequenceWithMemoization(String s1, String s2) {
         int table[][] = new int[s1.length()][s2.length()];
-        for(int i = 0; i < s1.length(); i++) {
-            for(int j = 0; j < s2.length(); j++) {
+        for (int i = 0; i < s1.length(); i++) {
+            for (int j = 0; j < s2.length(); j++) {
                 table[i][j] = -1;
             }
         }
@@ -125,10 +125,10 @@ public class DPUtility {
     }
 
     public int lcsHelper(String s1, String s2, int i, int j, int table[][]) {
-        if(i >= s1.length() || j >= s2.length()) return 0;
-        if(table[i][j] != -1) return table[i][j];
+        if (i >= s1.length() || j >= s2.length()) return 0;
+        if (table[i][j] != -1) return table[i][j];
 
-        if(s1.charAt(i) == s2.charAt(j)) {
+        if (s1.charAt(i) == s2.charAt(j)) {
             return table[i][j] = 1 + lcsHelper(s1, s2, i + 1, j + 1, table);
         }
 
@@ -144,9 +144,9 @@ public class DPUtility {
 
         int table[][] = new int[m + 1][n + 1];
 
-        for(int i = 1; i < m + 1; i++) {
-            for(int j = 1; j < n + 1; j++) {
-                if(s1.charAt(i - 1) == s2.charAt(j - 1))
+        for (int i = 1; i < m + 1; i++) {
+            for (int j = 1; j < n + 1; j++) {
+                if (s1.charAt(i - 1) == s2.charAt(j - 1))
                     table[i][j] = 1 + table[i - 1][j - 1];
                 else
                     table[i][j] = Math.max(table[i - 1][j], table[i][j - 1]);
@@ -174,8 +174,8 @@ public class DPUtility {
     }
 
     public int changeRecursiveHelper(int amount, int[] coins, int i) {
-        if(amount == 0) return 1;
-        if(amount < 0 || i >= coins.length) return 0;
+        if (amount == 0) return 1;
+        if (amount < 0 || i >= coins.length) return 0;
         return changeRecursiveHelper(amount - coins[i], coins, i) +
                 changeRecursiveHelper(amount, coins, i + 1);
 
@@ -184,8 +184,8 @@ public class DPUtility {
     //Recursive implementation with memoization - Top down
     public int changeRecursiveMemoization(int amount, int[] coins) {
         int table[][] = new int[coins.length][amount];
-        for(int i = 0; i < coins.length; i++) {
-            for(int j = 0; j < amount; j++) {
+        for (int i = 0; i < coins.length; i++) {
+            for (int j = 0; j < amount; j++) {
                 table[i][j] = -1;
             }
         }
@@ -193,9 +193,9 @@ public class DPUtility {
     }
 
     public int changeRecursiveMemoizationHelper(int amount, int[] coins, int i, int table[][]) {
-        if(amount == 0) return 1;
-        if(amount < 0 || i >= coins.length) return 0;
-        if(table[i][amount - 1] != -1) return table[i][amount - 1];
+        if (amount == 0) return 1;
+        if (amount < 0 || i >= coins.length) return 0;
+        if (table[i][amount - 1] != -1) return table[i][amount - 1];
         return table[i][amount - 1] = changeRecursiveMemoizationHelper(amount - coins[i], coins, i, table) +
                 changeRecursiveMemoizationHelper(amount, coins, i + 1, table);
 
@@ -205,9 +205,9 @@ public class DPUtility {
     public int changeIterative(int amount, int[] coins) {
         int table[] = new int[amount + 1];
         table[0] = 1;
-        for(int i = 0; i < coins.length; i++) {
-            for(int j = coins[i]; j < amount + 1; j++) {
-                table[j]  += table[j - coins[i]];
+        for (int i = 0; i < coins.length; i++) {
+            for (int j = coins[i]; j < amount + 1; j++) {
+                table[j] += table[j - coins[i]];
             }
         }
         return table[amount];
@@ -223,9 +223,9 @@ public class DPUtility {
 
     //Recursive Implementation
     public int numTreesRecursive(int n) {
-        if(n <= 1) return 1;
+        if (n <= 1) return 1;
         int sum = 0;
-        for(int i = 1; i <= n; i++) {
+        for (int i = 1; i <= n; i++) {
             sum += (numTreesRecursive(i - 1) * numTreesRecursive(n - i));
         }
         return sum;
@@ -240,10 +240,10 @@ public class DPUtility {
     }
 
     public int numTreesMemoizationHelper(int n, int table[]) {
-        if(n <= 1) return 1;
-        if(table[n] != 0) return table[n];
+        if (n <= 1) return 1;
+        if (table[n] != 0) return table[n];
         int sum = 0;
-        for(int i = 1; i <= n; i++) {
+        for (int i = 1; i <= n; i++) {
             sum += (numTreesMemoizationHelper(i - 1, table) * numTreesMemoizationHelper(n - i, table));
         }
         return table[n] = sum;
@@ -251,13 +251,13 @@ public class DPUtility {
 
     //Iterative - Bottom up
     public int numTreesIterative(int n) {
-        if(n <= 1) return 1;
+        if (n <= 1) return 1;
         int table[] = new int[n + 1];
         table[0] = 1;
         table[1] = 1;
-        for(int i = 2; i < n + 1; i++) {
+        for (int i = 2; i < n + 1; i++) {
             table[i] = 0;
-            for(int j = 1; j <= i; j++) {
+            for (int j = 1; j <= i; j++) {
                 table[i] += table[j - 1] * table[i - j];
             }
         }
@@ -280,14 +280,14 @@ public class DPUtility {
     //Recursive Implementation
     public static int tilingRecusrive(int A) {
         final int M = 1000000007;
-        if(A == 1) return 1;
-        if(A == 2) return 2;
+        if (A == 1) return 1;
+        if (A == 2) return 2;
         return (tilingRecusrive(A - 1) + tilingRecusrive(A - 2)) % M;
     }
 
     //Recursion with Memoization - Top down
     public int tilingRecusriveMemoization(int A) {
-        if(A == 1) return 1;
+        if (A == 1) return 1;
         int table[] = new int[A + 1];
         table[1] = 1;
         table[2] = 2;
@@ -296,7 +296,7 @@ public class DPUtility {
 
     public int tilingRecursiveMemoizationHelper(int A, int table[]) {
         final int M = 1000000007;
-        if(table[A] != 0) return table[A];
+        if (table[A] != 0) return table[A];
         return table[A] = (tilingRecursiveMemoizationHelper(A - 1, table) +
                 tilingRecursiveMemoizationHelper(A - 2, table)) % M;
     }
@@ -304,9 +304,10 @@ public class DPUtility {
     //Iterative - Bottom up
     public int tilingIterative(int A) {
         final int M = 1000000007;
-        int a1 = 1; int a2 = 2;
-        if(A == 1) return a1;
-        for(int i = 3; i <= A; i++) {
+        int a1 = 1;
+        int a2 = 2;
+        if (A == 1) return a1;
+        for (int i = 3; i <= A; i++) {
             int temp = (a1 + a2) % M;
             a1 = a2 % M;
             a2 = temp;
@@ -317,7 +318,7 @@ public class DPUtility {
     //-----------------------------------------------------------------------------------------------------//
 
     /*
-    Number of ways to reach nth stair using upto m steps at a time
+    7. Number of ways to reach nth stair using upto m steps at a time
     Count the number of ways a person can climb n stairs if the person can climb up to m stairs at a time.
     Input: n = 4, m = 2    Output: 5
     Input: n = 7, m= 3     Output: 44
@@ -326,11 +327,11 @@ public class DPUtility {
 
     //Recursive Implementation
     static int stepPermsRec(int n, int m) {
-        if(n == 1) return 1;
+        if (n == 1) return 1;
         int ways = 0;
-        if(n <= m)
+        if (n <= m)
             ways = 1;
-        for(int i = 1; i <= m && i < n; i++) {
+        for (int i = 1; i <= m && i < n; i++) {
             ways += stepPermsRec(n - i, m);
         }
         return ways;
@@ -345,13 +346,13 @@ public class DPUtility {
     }
 
     static int stepPermsRecHelper(int n, int m, int table[]) {
-        if(n == 1) return 1;
-        if(table[n] != 0) return table[n];
+        if (n == 1) return 1;
+        if (table[n] != 0) return table[n];
         int ways = 0;
-        if(n <= m)
+        if (n <= m)
             ways = 1;
 
-        for(int i = 1; i <= m && i < n; i++) {
+        for (int i = 1; i <= m && i < n; i++) {
             ways += stepPermsRecHelper(n - i, m, table);
         }
         return table[n] = ways;
@@ -359,14 +360,14 @@ public class DPUtility {
 
     //Iterative - Bottom up
     static int stepPermsIterative(int n, int m) {
-        if(n == 1) return 1;
+        if (n == 1) return 1;
         int table[] = new int[n + 1];
         table[1] = 1;
 
-        for(int i = 2; i <= n; i++) {
-            if(i <= m)
+        for (int i = 2; i <= n; i++) {
+            if (i <= m)
                 table[i] = 1;
-            for(int j = 1; j <= m && j < i; j++) {
+            for (int j = 1; j <= m && j < i; j++) {
                 table[i] += table[i - j];
             }
         }
@@ -374,5 +375,74 @@ public class DPUtility {
     }
 
     //Sliding Window Approach - Try on your own
+
+    /*
+    8. Minimum Edit Distance - Given two words word1 and word2, find the minimum number of operations
+    required to convert word1 to word2.
+    Input: word1 = "intention", word2 = "execution"
+    Output: 5
+    Input: word1 = "sunday", word2 = "saturday"
+    Output: 3
+    Practice: https://leetcode.com/problems/edit-distance/
+     */
+
+    //Recursive implementation
+    public int minDistanceRecursive(String s1, String s2) {
+        return minDistanceRecHelper(s1, s2, 0, 0);
+    }
+
+    public int minDistanceRecHelper(String s1, String s2, int i, int j) {
+        if (i >= s1.length()) return s2.length() - j;
+        if (j >= s2.length()) return s1.length() - i;
+
+        if (s1.charAt(i) == s2.charAt(j))
+            return minDistanceRecHelper(s1, s2, i + 1, j + 1);
+
+        return 1 + Math.min(minDistanceRecHelper(s1, s2, i + 1, j + 1),
+                Math.min(minDistanceRecHelper(s1, s2, i, j + 1),
+                        minDistanceRecHelper(s1, s2, i + 1, j)));
+    }
+
+    //Recursion with memoization - Top down
+    public int minDistanceMemoization(String s1, String s2) {
+        int table[][] = new int[s1.length()][s2.length()];
+        return minDistanceMemHelper(s1, s2, 0, 0, table);
+    }
+
+    public int minDistanceMemHelper(String s1, String s2, int i, int j, int table[][]) {
+        if (i >= s1.length()) return s2.length() - j;
+        if (j >= s2.length()) return s1.length() - i;
+        if (table[i][j] != 0) return table[i][j];
+        if (s1.charAt(i) == s2.charAt(j))
+            return table[i][j] = minDistanceMemHelper(s1, s2, i + 1, j + 1, table);
+
+        return table[i][j] = 1 + Math.min(minDistanceMemHelper(s1, s2, i + 1, j + 1, table),
+                Math.min(minDistanceMemHelper(s1, s2, i, j + 1, table),
+                        minDistanceMemHelper(s1, s2, i + 1, j, table)));
+    }
+
+    //Iterative - Bottom up
+    public int minDistanceIterative(String s1, String s2) {
+        int m = s1.length();
+        int n = s2.length();
+        s1 = "a" + s1;
+        s2 = "a" + s2;
+        int table[][] = new int[m + 1][n + 1];
+        for (int i = 0; i < m + 1; i++) table[i][0] = i;
+        for (int j = 0; j < n + 1; j++) table[0][j] = j;
+
+        for (int i = 1; i < m + 1; i++) {
+            for (int j = 1; j < n + 1; j++) {
+                if (s1.charAt(i) == s2.charAt(j)) {
+                    table[i][j] = table[i - 1][j - 1];
+                } else {
+                    table[i][j] = 1 + Math.min(table[i - 1][j - 1],
+                            Math.min(table[i - 1][j],
+                                    table[i][j - 1]));
+                }
+            }
+        }
+        return table[m][n];
+    }
 
 }
