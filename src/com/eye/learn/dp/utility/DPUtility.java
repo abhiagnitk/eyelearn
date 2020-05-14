@@ -445,4 +445,93 @@ public class DPUtility {
         return table[m][n];
     }
 
+    /*
+    9.Given an array of non-negative integers, you are initially positioned at the first index of the array.
+    Each element in the array represents your maximum jump length at that position.
+    Your goal is to reach the last index in the minimum number of jumps.
+    Input: [2,3,1,1,4]  Output: 2
+    Input: [1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9]    Output: 3
+    Practice: https://leetcode.com/problems/jump-game-ii/
+     */
+
+    //Recursive implementation
+    public int jumpRec(int[] nums) {
+        return jumpRecHelper(nums, 0);
+    }
+
+    public int jumpRecHelper(int[] nums, int i) {
+        if(i >= nums.length - 1) return 0;
+        if(nums[i] <= 0) return Integer.MAX_VALUE;
+        if(nums[i] >= nums.length - i) return 1;
+        int min = Integer.MAX_VALUE;
+        for(int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
+            //System.out.println("jumpRecHelper(" +j+")" );
+            min = Math.min(min, jumpRecHelper(nums, j));
+        }
+        if(min != Integer.MAX_VALUE)
+            return 1 + min;
+        else
+            return min;
+    }
+
+    //Recursion with memoization - Top down
+    public int jumpMemoization(int[] nums) {
+        int table[] = new int[nums.length];
+        return jumpMemHelper(nums, 0, table);
+    }
+
+    public int jumpMemHelper(int[] nums, int i, int table[]) {
+        if(i >= nums.length - 1) return 0;
+        if(nums[i] <= 0) return table[i] = Integer.MAX_VALUE;
+        if(table[i] != 0) return table[i];
+        if(nums[i] >= nums.length - i) return table[i] = 1;
+        int min = Integer.MAX_VALUE;
+        for(int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
+            //System.out.println("jumpRecHelper(" +j+")" );
+            min = Math.min(min, jumpMemHelper(nums, j, table));
+        }
+        if(min != Integer.MAX_VALUE)
+            return table[i] = 1 + min;
+        return table[i] = min;
+    }
+
+    //Iterative - Bottom up
+    public int jumpIterativeFromEnd(int[] nums) {
+        int n = nums.length;
+        int table[] = new int[n];
+        table[n - 1] = 0;
+        for(int i = n - 2; i >= 0; i--) {
+            int min = Integer.MAX_VALUE;
+            for(int j = i + 1; j < n && j <= nums[i] + i; j++) {
+                min = Math.min(table[j], min);
+            }
+            if(min != Integer.MAX_VALUE)
+                table[i] = 1 + min;
+            else
+                table[i] = min;
+        }
+        return table[0];
+    }
+
+    //Iterative - From beginning -- More efficient
+    public int jumpIterativeFromBeginning(int[] nums) {
+        int n = nums.length;
+        if(n == 1) return 0;
+        int table[] = new int[n];
+        int lastIndexTraversed = 1;
+        int i = 0;
+        while(i < n - 1) {
+            if(nums[i] + i >= n - 1)
+                return 1 + table[i];
+
+            while(lastIndexTraversed <= nums[i] + i) {
+                table[lastIndexTraversed] = 1 + table[i];
+                lastIndexTraversed++;
+            }
+            i++;
+        }
+
+        return table[n - 1] + 1;
+    }
+
 }
