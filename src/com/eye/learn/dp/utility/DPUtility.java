@@ -376,6 +376,7 @@ public class DPUtility {
 
     //Sliding Window Approach - Try on your own
 
+    //-----------------------------------------------------------------------------------------------------//
     /*
     8. Minimum Edit Distance - Given two words word1 and word2, find the minimum number of operations
     required to convert word1 to word2.
@@ -445,8 +446,10 @@ public class DPUtility {
         return table[m][n];
     }
 
+    //-----------------------------------------------------------------------------------------------------//
     /*
-    9.Given an array of non-negative integers, you are initially positioned at the first index of the array.
+    Jump Games
+    9a.Given an array of non-negative integers, you are initially positioned at the first index of the array.
     Each element in the array represents your maximum jump length at that position.
     Your goal is to reach the last index in the minimum number of jumps.
     Input: [2,3,1,1,4]  Output: 2
@@ -533,5 +536,95 @@ public class DPUtility {
 
         return table[n - 1] + 1;
     }
+
+    /*
+    Jump Games
+    9b. Count number of ways to jump to reach end
+    Given an array of numbers where each element represents the max number of jumps
+    that can be made forward from that element. For each array element,
+    count number of ways jumps can be made from that element to reach the end of the array.
+    If an element is 0, then move cannot be made through that element.
+    The element that cannot reach to the end should have a count "-1".
+    Question: https://www.geeksforgeeks.org/count-number-ways-jump-reach-end/
+    Similar question to practice: https://leetcode.com/problems/jump-game/
+     */
+
+    //Recursive implementation
+    public boolean canJumpRecursive(int[] nums) {
+        if(nums.length == 1) return true;
+        return canJumpHelper(nums, 0) != 0 ? true : false;
+
+    }
+
+    public int canJumpHelper(int[] nums, int i) {
+        if(i >= nums.length - 1) return 0;
+        int sum = 0;
+        if(nums[i] + i >= nums.length - 1)
+            sum = 1;
+        for(int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
+            sum += canJumpHelper(nums,  j);
+        }
+        return sum;
+    }
+
+    //Recursive implementation with memoization - Top down
+    public boolean canJumpMemoization(int[] nums) {
+        if(nums.length == 1) return true;
+        int[] table = new int[nums.length - 1];
+        return canJumpMemHelper(nums, 0, table) != 0 ? true : false;
+    }
+
+    public int canJumpMemHelper(int[] nums, int i, int[] table) {
+        if(i >= nums.length - 1 || nums[i] <= 0) return 0;
+        if(table[i] != 0) return table[i];
+        int sum = 0;
+        if(nums[i] + i >= nums.length - 1)
+            sum = 1;
+        for(int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
+            sum += canJumpMemHelper(nums,  j, table);
+        }
+        return table[i] = sum;
+    }
+
+    public boolean canJumpIterative(int[] nums) {
+        if(nums.length == 1) return true;
+        int n = nums.length;
+        int table[] = new int[n];
+        for(int i = n - 2; i >= 0; i--) {
+            int sum = 0;
+            if(nums[i] + i >= n - 1)
+                sum = 1;
+            for(int j = i + 1; j <= nums[i] + i && j < n; j++) {
+                sum += table[j];
+            }
+            table[i] = sum;
+        }
+        return table[0] != 0;
+    }
+
+    //Iterative - Bottom up
+    public boolean canJumpIterative1(int[] nums) {
+        if(nums.length == 1) return true;
+        int n = nums.length;
+        boolean table[] = new boolean[n];
+        for(int i = n - 2; i >= 0; i--) {
+            if(nums[i] + i >= n - 1)
+                table[i] = true;
+            else {
+                int j = i + 1;
+                while(j <= nums[i] + i && j < n) {
+                    if(table[j]) {
+                        table[i] = true;
+                        break;
+                    }
+                    j++;
+                }
+            }
+        }
+        return table[0];
+    }
+
+    //-----------------------------------------------------------------------------------------------------//
+
 
 }
