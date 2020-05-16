@@ -1,5 +1,7 @@
 package com.eye.learn.dp.utility;
 
+import java.util.Arrays;
+
 public class DPUtility {
 
     /*
@@ -463,15 +465,15 @@ public class DPUtility {
     }
 
     public int jumpRecHelper(int[] nums, int i) {
-        if(i >= nums.length - 1) return 0;
-        if(nums[i] <= 0) return Integer.MAX_VALUE;
-        if(nums[i] >= nums.length - i) return 1;
+        if (i >= nums.length - 1) return 0;
+        if (nums[i] <= 0) return Integer.MAX_VALUE;
+        if (nums[i] >= nums.length - i) return 1;
         int min = Integer.MAX_VALUE;
-        for(int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
+        for (int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
             //System.out.println("jumpRecHelper(" +j+")" );
             min = Math.min(min, jumpRecHelper(nums, j));
         }
-        if(min != Integer.MAX_VALUE)
+        if (min != Integer.MAX_VALUE)
             return 1 + min;
         else
             return min;
@@ -484,16 +486,16 @@ public class DPUtility {
     }
 
     public int jumpMemHelper(int[] nums, int i, int table[]) {
-        if(i >= nums.length - 1) return 0;
-        if(nums[i] <= 0) return table[i] = Integer.MAX_VALUE;
-        if(table[i] != 0) return table[i];
-        if(nums[i] >= nums.length - i) return table[i] = 1;
+        if (i >= nums.length - 1) return 0;
+        if (nums[i] <= 0) return table[i] = Integer.MAX_VALUE;
+        if (table[i] != 0) return table[i];
+        if (nums[i] >= nums.length - i) return table[i] = 1;
         int min = Integer.MAX_VALUE;
-        for(int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
+        for (int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
             //System.out.println("jumpRecHelper(" +j+")" );
             min = Math.min(min, jumpMemHelper(nums, j, table));
         }
-        if(min != Integer.MAX_VALUE)
+        if (min != Integer.MAX_VALUE)
             return table[i] = 1 + min;
         return table[i] = min;
     }
@@ -503,12 +505,12 @@ public class DPUtility {
         int n = nums.length;
         int table[] = new int[n];
         table[n - 1] = 0;
-        for(int i = n - 2; i >= 0; i--) {
+        for (int i = n - 2; i >= 0; i--) {
             int min = Integer.MAX_VALUE;
-            for(int j = i + 1; j < n && j <= nums[i] + i; j++) {
+            for (int j = i + 1; j < n && j <= nums[i] + i; j++) {
                 min = Math.min(table[j], min);
             }
-            if(min != Integer.MAX_VALUE)
+            if (min != Integer.MAX_VALUE)
                 table[i] = 1 + min;
             else
                 table[i] = min;
@@ -519,15 +521,15 @@ public class DPUtility {
     //Iterative - From beginning -- More efficient
     public int jumpIterativeFromBeginning(int[] nums) {
         int n = nums.length;
-        if(n == 1) return 0;
+        if (n == 1) return 0;
         int table[] = new int[n];
         int lastIndexTraversed = 1;
         int i = 0;
-        while(i < n - 1) {
-            if(nums[i] + i >= n - 1)
+        while (i < n - 1) {
+            if (nums[i] + i >= n - 1)
                 return 1 + table[i];
 
-            while(lastIndexTraversed <= nums[i] + i) {
+            while (lastIndexTraversed <= nums[i] + i) {
                 table[lastIndexTraversed] = 1 + table[i];
                 lastIndexTraversed++;
             }
@@ -551,50 +553,50 @@ public class DPUtility {
 
     //Recursive implementation
     public boolean canJumpRecursive(int[] nums) {
-        if(nums.length == 1) return true;
+        if (nums.length == 1) return true;
         return canJumpHelper(nums, 0) != 0 ? true : false;
 
     }
 
     public int canJumpHelper(int[] nums, int i) {
-        if(i >= nums.length - 1) return 0;
+        if (i >= nums.length - 1) return 0;
         int sum = 0;
-        if(nums[i] + i >= nums.length - 1)
+        if (nums[i] + i >= nums.length - 1)
             sum = 1;
-        for(int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
-            sum += canJumpHelper(nums,  j);
+        for (int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
+            sum += canJumpHelper(nums, j);
         }
         return sum;
     }
 
     //Recursive implementation with memoization - Top down
     public boolean canJumpMemoization(int[] nums) {
-        if(nums.length == 1) return true;
+        if (nums.length == 1) return true;
         int[] table = new int[nums.length - 1];
         return canJumpMemHelper(nums, 0, table) != 0 ? true : false;
     }
 
     public int canJumpMemHelper(int[] nums, int i, int[] table) {
-        if(i >= nums.length - 1 || nums[i] <= 0) return 0;
-        if(table[i] != 0) return table[i];
+        if (i >= nums.length - 1 || nums[i] <= 0) return 0;
+        if (table[i] != 0) return table[i];
         int sum = 0;
-        if(nums[i] + i >= nums.length - 1)
+        if (nums[i] + i >= nums.length - 1)
             sum = 1;
-        for(int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
-            sum += canJumpMemHelper(nums,  j, table);
+        for (int j = i + 1; j <= nums[i] + i && j < nums.length; j++) {
+            sum += canJumpMemHelper(nums, j, table);
         }
         return table[i] = sum;
     }
 
     public boolean canJumpIterative(int[] nums) {
-        if(nums.length == 1) return true;
+        if (nums.length == 1) return true;
         int n = nums.length;
         int table[] = new int[n];
-        for(int i = n - 2; i >= 0; i--) {
+        for (int i = n - 2; i >= 0; i--) {
             int sum = 0;
-            if(nums[i] + i >= n - 1)
+            if (nums[i] + i >= n - 1)
                 sum = 1;
-            for(int j = i + 1; j <= nums[i] + i && j < n; j++) {
+            for (int j = i + 1; j <= nums[i] + i && j < n; j++) {
                 sum += table[j];
             }
             table[i] = sum;
@@ -604,16 +606,16 @@ public class DPUtility {
 
     //Iterative - Bottom up
     public boolean canJumpIterative1(int[] nums) {
-        if(nums.length == 1) return true;
+        if (nums.length == 1) return true;
         int n = nums.length;
         boolean table[] = new boolean[n];
-        for(int i = n - 2; i >= 0; i--) {
-            if(nums[i] + i >= n - 1)
+        for (int i = n - 2; i >= 0; i--) {
+            if (nums[i] + i >= n - 1)
                 table[i] = true;
             else {
                 int j = i + 1;
-                while(j <= nums[i] + i && j < n) {
-                    if(table[j]) {
+                while (j <= nums[i] + i && j < n) {
+                    if (table[j]) {
                         table[i] = true;
                         break;
                     }
@@ -626,5 +628,197 @@ public class DPUtility {
 
     //-----------------------------------------------------------------------------------------------------//
 
+    /*
+    Reach destination in a Maze
+    10a. A robot is located at the top-left corner of a m x n grid. The robot can only move either
+    down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid.
+    How many possible unique paths are there?
+    Input: m = 3, n = 2     Output: 3
+    Input: m = 7, n = 3     Output: 28
+    Practice: https://leetcode.com/problems/unique-paths/
+     */
 
+    //Recursive implementation
+    public int uniquePathsRecursive(int m, int n) {
+        return uniquePathsRecHelper(m - 1, n - 1, m, n);
+    }
+
+    public int uniquePathsRecHelper(int i, int j, int m, int n) {
+        if (i == 0 || j == 0) return 1;
+        return uniquePathsRecHelper(i - 1, j, m, n) +
+                uniquePathsRecHelper(i, j - 1, m, n);
+    }
+
+    //Recursion with memoization - Top down
+    public int uniquePathsMemoization(int m, int n) {
+        int table[][] = new int[m][n];
+        return uniquePathsMemHelper(m - 1, n - 1, m, n, table);
+    }
+
+    public int uniquePathsMemHelper(int i, int j, int m, int n, int table[][]) {
+        if (i == 0 || j == 0) return 1;
+        if (table[i][j] != 0) return table[i][j];
+        return table[i][j] = uniquePathsMemHelper(i - 1, j, m, n, table) +
+                uniquePathsMemHelper(i, j - 1, m, n, table);
+    }
+
+    //Iterative - Bottom up
+    public int uniquePathsIterative(int m, int n) {
+        int table[][] = new int[m][n];
+        for (int i = 0; i < m; i++) table[i][0] = 1;
+        for (int i = 0; i < n; i++) table[0][i] = 1;
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                table[i][j] = table[i - 1][j] + table[i][j - 1];
+            }
+        }
+        return table[m - 1][n - 1];
+    }
+
+    /*
+    Reach destination in a Maze
+    10b. A robot is located at the top-left corner of a m x n grid. The robot can only move either down or right
+    at any point in time. The robot is trying to reach the bottom-right corner of the grid.
+    Now consider if some obstacles are added to the grids. How many unique paths would there be?
+    An obstacle and empty space is marked as 1 and 0 respectively in the grid.
+    Input: [[0,0,0],[0,1,0],[0,0,0],[0,0,0]]
+    Output: 4
+    Practice: https://leetcode.com/problems/unique-paths-ii/
+     */
+
+    //Recursive implementation
+    public int uniquePathsWithObstaclesRecursive(int[][] a) {
+        if(a[0][0] == 1) return 0;
+        int m = a.length;
+        int n = a[0].length;
+        return uniquePathsWithObstaclesRecHelper(a, m - 1, n - 1);
+    }
+
+    public int uniquePathsWithObstaclesRecHelper(int[][] a, int i, int j) {
+        if(i == 0 && j == 0) return 1;
+        if(i < 0 || j < 0) return 0;
+        if(a[i][j] == 1) return 0;
+        return uniquePathsWithObstaclesRecHelper(a, i - 1, j) +
+                uniquePathsWithObstaclesRecHelper(a, i, j - 1);
+    }
+
+    //Recursion with memoization - Top down
+    public int uniquePathsWithObstaclesMemoization(int[][] a) {
+        if(a[0][0] == 1) return 0;
+        int m = a.length;
+        int n = a[0].length;
+        int table[][] = new int[m][n];
+        for (int i = 0; i < m; i++)
+            Arrays.fill(table[i], -1);
+        return uniquePathsWithObstaclesMemHelper(a, m - 1, n - 1, table);
+    }
+
+    public int uniquePathsWithObstaclesMemHelper(int[][] a, int i, int j, int table[][]) {
+        if(i == 0 && j == 0) return 1;
+        if(i < 0 || j < 0) return 0;
+        if(a[i][j] == 1) return table[i][j] = 0;
+        if(table[i][j] != -1) return table[i][j];
+        return table[i][j] = uniquePathsWithObstaclesMemHelper(a, i - 1, j, table) +
+                uniquePathsWithObstaclesMemHelper(a, i, j - 1, table);
+    }
+
+    //Iterative - Bottom up
+    public int uniquePathsWithObstaclesIterative(int[][] a) {
+        if(a[0][0] == 1) return 0;
+        int m = a.length;
+        int n = a[0].length;
+        int table[][] = new int[m][n];
+        table[0][0] = 1;
+        for(int i = 1; i < m; i++) {
+            if(a[i][0] == 0)
+                table[i][0] = 1;
+            else
+                break;
+        }
+        for(int i = 1; i < n; i++) {
+            if(a[0][i] == 0)
+                table[0][i] = 1;
+            else
+                break;
+        }
+
+        for(int i = 1; i < m; i++) {
+            for(int j = 1; j < n; j++) {
+                if(a[i][j] == 0)
+                    table[i][j] = table[i - 1][j] + table[i][j - 1];
+            }
+        }
+        return table[m - 1][n - 1];
+    }
+
+    /*
+    Reach destination in a Maze
+    10c. Given a m x n grid filled with non-negative numbers,
+    find a path from top left to bottom right which minimizes the sum of all numbers along its path.
+    Note: You can only move either down or right at any point in time.
+    Input: [[1,3,1],[1,5,1],[4,2,1]]    Output: 7
+    Practice: https://leetcode.com/problems/minimum-path-sum/
+     */
+
+    //Recursive Implementation
+    public int minPathSumRecursive(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        return minPathSumRecHelper(grid, m - 1, n - 1);
+    }
+
+    public int minPathSumRecHelper(int[][] grid, int i, int j) {
+        if(i < 0 || j < 0) return 0;
+        if(i == 0) return grid[i][j] + minPathSumRecHelper(grid, i, j - 1);
+        if(j == 0) return grid[i][j] + minPathSumRecHelper(grid, i - 1, j);
+        return grid[i][j] + Math.min(minPathSumRecHelper(grid, i -1, j),
+                minPathSumRecHelper(grid, i, j - 1));
+    }
+
+    //Recursion with Memoization - Top down
+    public int minPathSumMemoization(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int table[][] = new int[m][n];
+        for(int i = 0; i < m; i++) {
+            Arrays.fill(table[i], -1);
+        }
+        return minPathSumMemHelper(grid, m - 1, n - 1, table);
+    }
+
+    public int minPathSumMemHelper(int[][] grid, int i, int j, int table[][]) {
+        if(i < 0 || j < 0) return 0;
+        if(table[i][j] != -1) return table[i][j];
+        if(i == 0)
+            return table[i][j] = grid[i][j] + minPathSumMemHelper(grid, i, j - 1, table);
+        if(j == 0)
+            return table[i][j] = grid[i][j] + minPathSumMemHelper(grid, i - 1, j, table);
+        return table[i][j] = grid[i][j] + Math.min(minPathSumMemHelper(grid, i -1, j, table),
+                minPathSumMemHelper(grid, i, j - 1, table));
+    }
+
+    //Iterative - Bottom up
+    public int minPathSumIterative(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int table[][] = new int[m][n];
+        table[0][0] = grid[0][0];
+
+        for(int i = 1; i < m; i++)
+            table[i][0] = grid[i][0] + table[i - 1][0];
+
+        for(int i = 1; i < n; i++)
+            table[0][i] = grid[0][i] + table[0][i - 1];
+
+        for(int i = 1; i < m; i++) {
+            for(int j = 1; j < n; j++) {
+                table[i][j] = grid[i][j] + Math.min(table[i - 1][j], table[i][j - 1]);
+            }
+        }
+        return table[m - 1][n - 1];
+    }
+
+    //-----------------------------------------------------------------------------------------------------//
 }
