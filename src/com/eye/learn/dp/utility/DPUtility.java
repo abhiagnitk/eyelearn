@@ -1,6 +1,9 @@
 package com.eye.learn.dp.utility;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DPUtility {
 
@@ -818,6 +821,55 @@ public class DPUtility {
             }
         }
         return table[m - 1][n - 1];
+    }
+
+    //-----------------------------------------------------------------------------------------------------//
+
+    /*
+    11. Given an input string and a dictionary of words, find out if the input string can be segmented into a
+    space-separated sequence of dictionary words.
+    Input: s = "leetcode", wordDict = ["leet", "code"]
+    Output: true
+    Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+    Output: false
+    Practice: https://leetcode.com/problems/word-break/
+     */
+
+    //Recursive implementation
+    public boolean wordBreakRecursive(String s, List<String> wordDict) {
+        Set<String> words = wordDict.stream().collect(Collectors.toSet());
+        return wordBreakHelper(s, words, s.length() - 1);
+    }
+
+    public boolean wordBreakHelper(String s, Set<String> words, int i) {
+        if(s == null || s.length() == 0) return true;
+        if(i < 0) return false;
+        String s1 = s.substring(i, s.length());
+        if(words.contains(s1)) {
+            return wordBreakHelper(s.substring(0, s.length() - s1.length()), words, s.length() - s1.length()) ||
+                    wordBreakHelper(s, words, i - 1);
+        }
+        return wordBreakHelper(s, words, i - 1);
+    }
+
+    //Iterative - Bottom up
+    public boolean wordBreakIterative(String s, List<String> wordDict) {
+        Set<String> words = wordDict.stream().collect(Collectors.toSet());
+        if(words.contains(s)) return true;
+        int n = s.length();
+        boolean table[] = new boolean[n + 1];
+        table[n] = true;
+        for(int i = n - 1; i >= 0; i--) {
+            for(int j = i + 1; j <= n; j++) {
+                if(table[j]) {
+                    if(words.contains(s.substring(i, j))) {
+                        table[i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return table[0];
     }
 
     //-----------------------------------------------------------------------------------------------------//
