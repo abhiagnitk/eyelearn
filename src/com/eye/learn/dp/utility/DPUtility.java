@@ -692,23 +692,23 @@ public class DPUtility {
 
     //Recursive implementation
     public int uniquePathsWithObstaclesRecursive(int[][] a) {
-        if(a[0][0] == 1) return 0;
+        if (a[0][0] == 1) return 0;
         int m = a.length;
         int n = a[0].length;
         return uniquePathsWithObstaclesRecHelper(a, m - 1, n - 1);
     }
 
     public int uniquePathsWithObstaclesRecHelper(int[][] a, int i, int j) {
-        if(i == 0 && j == 0) return 1;
-        if(i < 0 || j < 0) return 0;
-        if(a[i][j] == 1) return 0;
+        if (i == 0 && j == 0) return 1;
+        if (i < 0 || j < 0) return 0;
+        if (a[i][j] == 1) return 0;
         return uniquePathsWithObstaclesRecHelper(a, i - 1, j) +
                 uniquePathsWithObstaclesRecHelper(a, i, j - 1);
     }
 
     //Recursion with memoization - Top down
     public int uniquePathsWithObstaclesMemoization(int[][] a) {
-        if(a[0][0] == 1) return 0;
+        if (a[0][0] == 1) return 0;
         int m = a.length;
         int n = a[0].length;
         int table[][] = new int[m][n];
@@ -718,37 +718,37 @@ public class DPUtility {
     }
 
     public int uniquePathsWithObstaclesMemHelper(int[][] a, int i, int j, int table[][]) {
-        if(i == 0 && j == 0) return 1;
-        if(i < 0 || j < 0) return 0;
-        if(a[i][j] == 1) return table[i][j] = 0;
-        if(table[i][j] != -1) return table[i][j];
+        if (i == 0 && j == 0) return 1;
+        if (i < 0 || j < 0) return 0;
+        if (a[i][j] == 1) return table[i][j] = 0;
+        if (table[i][j] != -1) return table[i][j];
         return table[i][j] = uniquePathsWithObstaclesMemHelper(a, i - 1, j, table) +
                 uniquePathsWithObstaclesMemHelper(a, i, j - 1, table);
     }
 
     //Iterative - Bottom up
     public int uniquePathsWithObstaclesIterative(int[][] a) {
-        if(a[0][0] == 1) return 0;
+        if (a[0][0] == 1) return 0;
         int m = a.length;
         int n = a[0].length;
         int table[][] = new int[m][n];
         table[0][0] = 1;
-        for(int i = 1; i < m; i++) {
-            if(a[i][0] == 0)
+        for (int i = 1; i < m; i++) {
+            if (a[i][0] == 0)
                 table[i][0] = 1;
             else
                 break;
         }
-        for(int i = 1; i < n; i++) {
-            if(a[0][i] == 0)
+        for (int i = 1; i < n; i++) {
+            if (a[0][i] == 0)
                 table[0][i] = 1;
             else
                 break;
         }
 
-        for(int i = 1; i < m; i++) {
-            for(int j = 1; j < n; j++) {
-                if(a[i][j] == 0)
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (a[i][j] == 0)
                     table[i][j] = table[i - 1][j] + table[i][j - 1];
             }
         }
@@ -772,10 +772,10 @@ public class DPUtility {
     }
 
     public int minPathSumRecHelper(int[][] grid, int i, int j) {
-        if(i < 0 || j < 0) return 0;
-        if(i == 0) return grid[i][j] + minPathSumRecHelper(grid, i, j - 1);
-        if(j == 0) return grid[i][j] + minPathSumRecHelper(grid, i - 1, j);
-        return grid[i][j] + Math.min(minPathSumRecHelper(grid, i -1, j),
+        if (i < 0 || j < 0) return 0;
+        if (i == 0) return grid[i][j] + minPathSumRecHelper(grid, i, j - 1);
+        if (j == 0) return grid[i][j] + minPathSumRecHelper(grid, i - 1, j);
+        return grid[i][j] + Math.min(minPathSumRecHelper(grid, i - 1, j),
                 minPathSumRecHelper(grid, i, j - 1));
     }
 
@@ -784,20 +784,20 @@ public class DPUtility {
         int m = grid.length;
         int n = grid[0].length;
         int table[][] = new int[m][n];
-        for(int i = 0; i < m; i++) {
+        for (int i = 0; i < m; i++) {
             Arrays.fill(table[i], -1);
         }
         return minPathSumMemHelper(grid, m - 1, n - 1, table);
     }
 
     public int minPathSumMemHelper(int[][] grid, int i, int j, int table[][]) {
-        if(i < 0 || j < 0) return 0;
-        if(table[i][j] != -1) return table[i][j];
-        if(i == 0)
+        if (i < 0 || j < 0) return 0;
+        if (table[i][j] != -1) return table[i][j];
+        if (i == 0)
             return table[i][j] = grid[i][j] + minPathSumMemHelper(grid, i, j - 1, table);
-        if(j == 0)
+        if (j == 0)
             return table[i][j] = grid[i][j] + minPathSumMemHelper(grid, i - 1, j, table);
-        return table[i][j] = grid[i][j] + Math.min(minPathSumMemHelper(grid, i -1, j, table),
+        return table[i][j] = grid[i][j] + Math.min(minPathSumMemHelper(grid, i - 1, j, table),
                 minPathSumMemHelper(grid, i, j - 1, table));
     }
 
@@ -809,14 +809,14 @@ public class DPUtility {
         int table[][] = new int[m][n];
         table[0][0] = grid[0][0];
 
-        for(int i = 1; i < m; i++)
+        for (int i = 1; i < m; i++)
             table[i][0] = grid[i][0] + table[i - 1][0];
 
-        for(int i = 1; i < n; i++)
+        for (int i = 1; i < n; i++)
             table[0][i] = grid[0][i] + table[0][i - 1];
 
-        for(int i = 1; i < m; i++) {
-            for(int j = 1; j < n; j++) {
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
                 table[i][j] = grid[i][j] + Math.min(table[i - 1][j], table[i][j - 1]);
             }
         }
@@ -842,10 +842,10 @@ public class DPUtility {
     }
 
     public boolean wordBreakHelper(String s, Set<String> words, int i) {
-        if(s == null || s.length() == 0) return true;
-        if(i < 0) return false;
+        if (s == null || s.length() == 0) return true;
+        if (i < 0) return false;
         String s1 = s.substring(i, s.length());
-        if(words.contains(s1)) {
+        if (words.contains(s1)) {
             return wordBreakHelper(s.substring(0, s.length() - s1.length()), words, s.length() - s1.length()) ||
                     wordBreakHelper(s, words, i - 1);
         }
@@ -855,14 +855,14 @@ public class DPUtility {
     //Iterative - Bottom up
     public boolean wordBreakIterative(String s, List<String> wordDict) {
         Set<String> words = wordDict.stream().collect(Collectors.toSet());
-        if(words.contains(s)) return true;
+        if (words.contains(s)) return true;
         int n = s.length();
         boolean table[] = new boolean[n + 1];
         table[n] = true;
-        for(int i = n - 1; i >= 0; i--) {
-            for(int j = i + 1; j <= n; j++) {
-                if(table[j]) {
-                    if(words.contains(s.substring(i, j))) {
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i + 1; j <= n; j++) {
+                if (table[j]) {
+                    if (words.contains(s.substring(i, j))) {
                         table[i] = true;
                         break;
                     }
@@ -873,4 +873,298 @@ public class DPUtility {
     }
 
     //-----------------------------------------------------------------------------------------------------//
+
+    /*
+
+     */
+
+    //Recursive Implementation
+    static boolean isSubsetSumRec(int a[],
+                                  int target, int i) {
+        if (target == 0) return true;
+        if (target < 0) return false;
+        if (i >= a.length) return target == 0;
+        return isSubsetSumRec(a, target - a[i], i + 1) || isSubsetSumRec(a, target, i + 1);
+    }
+
+    //Iterative implementation - Bottom up
+    static boolean isSubsetSumIterative(int a[], int target) {
+        if (target == 0) return true;
+        int n = a.length;
+        boolean table[][] = new boolean[n + 1][target + 1];
+        table[0][0] = true;
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j <= target; j++) {
+                if (j - a[i - 1] < 0) {
+                    table[i][j] = table[i - 1][j];
+                } else {
+                    table[i][j] = table[i - 1][j] || table[i - 1][j - a[i - 1]];
+                }
+            }
+        }
+        return table[n][target];
+    }
+
+    //-----------------------------------------------------------------------------------------------------//
+
+    /*
+    Longest Increasing Subsequence
+    13. Given an unsorted array of integers, find the length of longest increasing subsequence.
+    Input: [10,9,2,5,3,7,101,18]
+    Output: 4
+    Practice: https://leetcode.com/problems/longest-increasing-subsequence/
+     */
+
+    //Recursive Implementation
+    public int lengthOfLISRec(int[] nums) {
+        int max = 0;
+        for (int i = 0; i < nums.length; i++) {
+            max = Math.max(max, lisHelper(nums, i));
+        }
+        return max;
+    }
+
+    public int lisHelper(int[] nums, int i) {
+        if (i >= nums.length) return 0;
+        int max = 0;
+        for (int j = i + 1; j < nums.length; j++) {
+            if (nums[i] < nums[j])
+                max = Math.max(max, lisHelper(nums, j));
+        }
+        return 1 + max;
+    }
+
+    //Recursion with memoization - Top down
+    public int lengthOfLISMemoization(int[] nums) {
+        int max = 0;
+        int table[] = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            max = Math.max(max, lisMemHelper(nums, i, table));
+        }
+        return max;
+    }
+
+    public int lisMemHelper(int[] nums, int i, int table[]) {
+        if (i >= nums.length) return 0;
+        if (table[i] != 0) return table[i];
+        int max = 0;
+        for (int j = i + 1; j < nums.length; j++) {
+            if (nums[i] < nums[j])
+                max = Math.max(max, lisMemHelper(nums, j, table));
+        }
+        return table[i] = 1 + max;
+    }
+
+    //Iterative implementation - Bottom up
+    public int lengthOfLISIterative(int[] nums) {
+        int table[] = new int[nums.length];
+        int max_till_now = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[j] < nums[i]) {
+                    table[i] = Math.max(table[i], table[j]);
+                    if (max_till_now == table[i]) {
+                        break;
+                    }
+                }
+            }
+            table[i]++;
+            if (max_till_now < table[i])
+                max_till_now = table[i];
+        }
+        return max_till_now;
+    }
+    //-----------------------------------------------------------------------------------------------------//
+
+    /*
+    14. Minimum partition sum / Partition Equal Subset Sum
+    Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets
+    such that the sum of elements in both subsets is equal.
+    Input: [1, 5, 11, 5]
+    Output: true
+    Practice: https://leetcode.com/problems/partition-equal-subset-sum/
+    Similar question: https://www.geeksforgeeks.org/partition-a-set-into-two-subsets-such-that-the-difference-of-subset-sums-is-minimum/
+     */
+
+    //Recursive implementation
+    public boolean canPartitionRecursive(int[] nums) {
+        int sum = Arrays.stream(nums).sum();
+        return canPartitionRecHelper(nums, sum, 0, 0);
+    }
+
+    public boolean canPartitionRecHelper(int[] nums, int s, int s1, int i) {
+        int diff = Math.abs(s - s1 - s1);
+        if (diff == 0) return true;
+        if (i >= nums.length) return diff == 0;
+        return canPartitionRecHelper(nums, s, s1 + nums[i], i + 1) ||
+                canPartitionRecHelper(nums, s, s1, i + 1);
+    }
+
+    //Iterative Implementation - Bottom up
+    public boolean canPartitionIterative(int[] a) {
+        int sum = Arrays.stream(a).sum();
+        if (sum % 2 == 1) return false;
+        sum = sum / 2;
+        int n = a.length;
+        boolean table[][] = new boolean[n + 1][sum + 1];
+        table[0][0] = true;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j <= sum; j++) {
+                if (j - a[i - 1] < 0) {
+                    table[i][j] = table[i - 1][j];
+                } else {
+                    table[i][j] = table[i - 1][j] || table[i - 1][j - a[i - 1]];
+                }
+            }
+        }
+        return table[n][sum];
+    }
+
+    //-----------------------------------------------------------------------------------------------------//
+
+    /*
+    15. Longest Palindromic Subsequence - Given a string s, find the longest palindromic subsequence's length in s.
+    Input: "bbbab"  Output: 4  (bbbb)
+    Input: "GEEKSFORGEEKS"  Output: 5 (EEKEE)
+    Practice:
+     */
+
+    //Recursive Implementation
+    public int longestPalindromeSubseqRec(String s) {
+        return longestPalindromeSubseqRecHelper(s, 0, s.length() - 1);
+    }
+
+    public int longestPalindromeSubseqRecHelper(String s, int i, int j) {
+        if (i > j) return 0;
+        if (i == j) return 1;
+        if (s.charAt(i) != s.charAt(j)) {
+            return Math.max(longestPalindromeSubseqRecHelper(s, i + 1, j),
+                    longestPalindromeSubseqRecHelper(s, i, j - 1));
+        }
+
+        return Math.max(2 + longestPalindromeSubseqRecHelper(s, i + 1, j - 1),
+                Math.max(longestPalindromeSubseqRecHelper(s, i + 1, j),
+                        longestPalindromeSubseqRecHelper(s, i, j - 1)));
+    }
+
+    //Iterative implementation - Bottom Up
+    public int longestPalindromeSubseqIterative(String s) {
+        int n = s.length();
+        int table[][] = new int[n][n];
+
+        for (int i = 0; i < n; i++) {
+            table[i][i] = 1;
+        }
+
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                table[i][j] = Math.max(table[i][j - 1], table[i + 1][j]);
+                if (s.charAt(i) == s.charAt(j))
+                    table[i][j] = Math.max(table[i][j], 2 + table[i + 1][j - 1]);
+            }
+        }
+        return table[0][n - 1];
+    }
+
+    /*
+    16. Longest Palindromic Substring - Given a string s, find the longest palindromic substring in s.
+     */
+
+    //Iterative - Brute Force
+    public String longestPalindromeIterative(String s) {
+        int maxLength = 0;
+        String maxLenSubString = "";
+        for (int i = 0; i < s.length(); i++) {
+            String s1 = "";
+            for (int j = i; j < s.length(); j++) {
+                s1 = s1 + s.charAt(j);
+                if (isPalindrome(s1) && maxLength < s1.length()) {
+                    maxLenSubString = s1;
+                    maxLength = s1.length();
+                }
+            }
+        }
+        return maxLenSubString;
+    }
+
+    public boolean isPalindrome(String s) {
+        int i = 0;
+        int j = s.length() - 1;
+
+        while (i <= j) {
+            if (s.charAt(i) != s.charAt(j))
+                return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    //Recursive implementation
+    public String longestPalindromeRecursive(String s) {
+        if (s.length() == 0 || s.length() == 1) return s;
+        return longestPalindromeRecHelper(s, 0, s.length() - 1);
+    }
+
+    public String longestPalindromeRecHelper(String s, int i, int j) {
+        if (i == j) return "" + s.charAt(i);
+        if (j - i == 1) {
+            if (s.charAt(i) == s.charAt(j)) {
+                return s.substring(i, j + 1);
+            }
+            return "" + s.charAt(i);
+        }
+
+        if (s.charAt(i) == s.charAt(j)) {
+            if (longestPalindromeRecHelper(s, i + 1, j - 1).length() == j - i - 1) {
+                return s.substring(i, j + 1);
+            }
+            return max(longestPalindromeRecHelper(s, i + 1, j),
+                    longestPalindromeRecHelper(s, i, j - 1));
+        }
+
+        return max(longestPalindromeRecHelper(s, i + 1, j),
+                longestPalindromeRecHelper(s, i, j - 1));
+    }
+
+    public String max(String s1, String s2) {
+        if (s1.length() > s2.length()) return s1;
+        return s2;
+    }
+
+    //Iterative - Bottom up
+    public String longestPalindromeDp(String s) {
+        int n = s.length();
+        if (n < 2) return s;
+        boolean table[][] = new boolean[n][n];
+        for (int i = 0; i < n; i++)
+            table[i][i] = true;
+
+        int maxLength = 1;
+        int start = 0;
+
+        for (int i = 0; i < n - 1; i++) {
+            if (s.charAt(i) == s.charAt(i + 1)) {
+                table[i][i + 1] = true;
+                start = i;
+                maxLength = 2;
+            }
+        }
+
+        for (int k = 3; k <= n; k++) {
+            for (int i = 0; i < n - k + 1; i++) {
+                int j = i + k - 1;
+                if (table[i + 1][j - 1] && s.charAt(i) == s.charAt(j)) {
+                    table[i][j] = true;
+                    if (k >= maxLength) {
+                        maxLength = k;
+                        start = i;
+                    }
+                }
+            }
+        }
+
+        return s.substring(start, start + maxLength);
+    }
 }
