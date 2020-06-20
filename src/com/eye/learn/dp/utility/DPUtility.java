@@ -1066,6 +1066,7 @@ public class DPUtility {
         }
         return table[0][n - 1];
     }
+    //-----------------------------------------------------------------------------------------------------//
 
     /*
     16. Longest Palindromic Substring - Given a string s, find the longest palindromic substring in s.
@@ -1166,5 +1167,49 @@ public class DPUtility {
         }
 
         return s.substring(start, start + maxLength);
+    }
+
+    //-----------------------------------------------------------------------------------------------------//
+
+    /*
+    22. Rod cutting
+    https://www.geeksforgeeks.org/cutting-a-rod-dp-13/
+     */
+
+    static int cutRodRec(int price[], int n)
+    {
+        if(n == 0) return 0;
+        if(n == 1) return price[0];
+        int max = price[n - 1];
+        for(int k = 1; k <= n/2; k++) {
+            max = Math.max(cutRodRec(price, k) + cutRodRec(price, n - k), max);
+        }
+        return max;
+    }
+
+    static int cutRodMem(int price[], int n, int table[])
+    {
+        if(n == 0) return 0;
+        if(n == 1) return price[0];
+        if(table[n] != 0) return table[n];
+        int max = price[n - 1];
+        for(int k = 1; k <= n/2; k++) {
+            max = Math.max(cutRodMem(price, k, table) + cutRodMem(price, n - k, table), max);
+        }
+        return table[n] = max;
+    }
+
+    static int cutRodIterative(int price[], int n) {
+        int table[] = new int[price.length + 1];
+        for(int i = 0; i < price.length; i++) {
+            table[i + 1] = price[i];
+        }
+        for(int j = 2; j <= n; j++) {
+            for(int k = 1; k <= j / 2; k++) {
+                table[j] = Math.max(table[k] + table[j - k], table[j]);
+            }
+        }
+
+        return table[n];
     }
 }
