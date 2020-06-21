@@ -1212,4 +1212,73 @@ public class DPUtility {
 
         return table[n];
     }
+
+    /*
+    23. Shortest Common Supersequence
+    Given two strings str1 and str2, return the shortest string that has both str1 and str2 as subsequences.
+    If multiple answers exist, you may return any of them.
+    Input: str1 = "abac", str2 = "cab"
+    Output: "cabac"
+    Practice: https://leetcode.com/problems/shortest-common-supersequence/
+     */
+
+    public String shortestCommonSupersequence(String s1, String s2) {
+        int m = s1.length();
+        int n = s2.length();
+
+        if(m == 0) return s2;
+        if(n == 0) return s1;
+
+        int table[][] = new int[m + 1][n + 1];
+
+        for(int i = 0; i <= m; i++) {
+            table[i][0] = i;
+        }
+
+        for(int j = 0; j <= n; j++) {
+            table[0][j] = j;
+        }
+        s1 = "l" + s1;
+        s2 = "l" + s2;
+        for(int i = 1; i <= m; i++) {
+            for(int j = 1; j <= n; j++) {
+                if(s1.charAt(i) == s2.charAt(j)) {
+                    table[i][j] = 1 + table[i - 1][j - 1];
+                } else {
+                    table[i][j] = 1 + Math.min(table[i - 1][j],
+                            table[i][j - 1]);
+                }
+            }
+        }
+
+        int i = m;
+        int j = n;
+        String s = "";
+        while(i > 0 && j > 0) {
+            if(s1.charAt(i) == s2.charAt(j)) {
+                s = s1.charAt(i) + s;
+                i--;
+                j--;
+            } else {
+                if(table[i - 1][j] + 1 == table[i][j]) {
+                    s = s1.charAt(i) + s;
+                    i--;
+                } else {
+                    s = s2.charAt(j) + s;
+                    j--;
+                }
+            }
+        }
+        while(i > 0) {
+            s = s1.charAt(i) + s;
+            i--;
+        }
+        while(j > 0) {
+            s = s2.charAt(j) + s;
+            j--;
+        }
+        return s;
+    }
+    //-----------------------------------------------------------------------------------------------------//
+
 }
